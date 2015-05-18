@@ -1,6 +1,7 @@
 (ns poker-rules.core
   (:gen-class))
 
+
 (defn is_flush
   ""
   [suits]
@@ -27,13 +28,32 @@
   (= (ff 2) n))
 
 
+(defn is_straight 
+  ""
+  [ranks]
+  (def sr (sort ranks))
+  (if (= (- (nth sr 4) (nth sr 0)) 4)
+    true
+    (and (= (nth sr 0) 1) (= (nth sr 1) 10) (= (nth sr 2) 11) (= (nth sr 3) 12) (= (nth sr 4) 13)))
+  )
+
+
+(defn is_straight_flush
+  ""
+  [ranks suits]
+  (and (is_straight ranks) (is_flush suits)))
+
+
 (defn -main
   ""
   [& args]
   (def ranks [1 1 5 5 13])
+  ;;(def ranks [1 13 10 11 12])
   (def suits [1 1 1 1 1])
   (def rank_frequencies (frequencies ranks))
   (println (is_n_of_a_kind rank_frequencies 4))
   (println (is_full_house rank_frequencies))
   (println (is_flush suits))
-  (println (is_n_pair rank_frequencies 2)))
+  (println (is_n_pair rank_frequencies 2))
+  (println (is_straight ranks))
+  (println (is_straight_flush ranks suits)))
